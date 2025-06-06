@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Entities\User;
 use App\Exceptions\FetchUserException;
 use App\Services\UserFetcherService;
 use App\Services\UserImporterService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Faker\Factory;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
@@ -24,13 +26,22 @@ class UserImportServiceTest extends TestCase
             ], 200),
         ]);
 
+        $entityRepository = \Mockery::mock(EntityRepository::class);
+        $entityRepository->shouldReceive('findOneBy')
+            ->times(100)
+            ->andReturn(null);
+
         $entityManagerService = \Mockery::mock(EntityManagerInterface::class);
-        $userFetcherService = \Mockery::mock(UserFetcherService::class);
-        
-        $userFetcherService->shouldReceive('fetch')->once()->andReturn($this->fakeUsers(100));
+        $entityManagerService->shouldReceive('getRepository')
+            ->with(User::class)
+            ->andReturn($entityRepository)
+            ->times(100);
         $entityManagerService->shouldReceive('persist')->times(100);
         $entityManagerService->shouldReceive('flush')->once();
-        
+
+        $userFetcherService = \Mockery::mock(UserFetcherService::class);
+        $userFetcherService->shouldReceive('fetch')->once()->andReturn($this->fakeUsers(100));
+
         $service = new UserImporterService($entityManagerService, $userFetcherService);
         $service->import();
     }
