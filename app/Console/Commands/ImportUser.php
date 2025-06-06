@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Exceptions\FetchUserException;
 use App\Services\UserImporterService;
 use Illuminate\Console\Command;
 
@@ -26,6 +27,11 @@ class ImportUser extends Command
      */
     public function handle(UserImporterService $userImporterService)
     {
-        $userImporterService->import($this->argument('results'), $this->argument('nat'));
+        try {
+            $userImporterService->import($this->argument('results'), $this->argument('nat'));
+            $this->info('Users fetched successfully.');
+        } catch (FetchUserException $e) {
+            $this->error('Users fetched failed.' . $e->getMessage());
+        }
     }
 }

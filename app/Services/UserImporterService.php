@@ -24,7 +24,15 @@ class UserImporterService
         $usersData = $this->userFetcherService->fetch($results, $nat);
 
         foreach ($usersData as $userData) {
-            $user = new User();
+            $user = $this->entityManagerInterface
+                ->getRepository(User::class)
+                ->findOneBy(['email' => $userData['email']]);
+
+            if (!$user) {
+                $user = new User();
+                $this->entityManagerInterface->persist($user);
+            }
+
             $user->setName($userData['name']['first'] . ' ' . $userData['name']['last']);
             $user->setEmail($userData['email']);
             $user->setUsername($userData['login']['username']);
@@ -33,7 +41,6 @@ class UserImporterService
             $user->setCountry($userData['location']['country']);
             $user->setCity($userData['location']['city']);
             $user->setPhone($userData['phone']);
-            $this->entityManagerInterface->persist($user);
         }
         $this->entityManagerInterface->flush();
     }
