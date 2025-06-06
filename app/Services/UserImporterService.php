@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Entities\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UserImporterService
@@ -20,6 +21,20 @@ class UserImporterService
 
     public function import(?int $results = null, ?string $nat = null): void
     {
-        //
+        $usersData = $this->userFetcherService->fetch($results, $nat);
+
+        foreach ($usersData as $userData) {
+            $user = new User();
+            $user->setName($userData['name']['first'] . ' ' . $userData['name']['last']);
+            $user->setEmail($userData['email']);
+            $user->setUsername($userData['login']['username']);
+            $user->setPassword($userData['login']['password']);
+            $user->setGender($userData['gender']);
+            $user->setCountry($userData['location']['country']);
+            $user->setCity($userData['location']['city']);
+            $user->setPhone($userData['phone']);
+            $this->entityManagerInterface->persist($user);
+        }
+        $this->entityManagerInterface->flush();
     }
 }

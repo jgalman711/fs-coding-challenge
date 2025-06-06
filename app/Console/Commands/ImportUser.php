@@ -26,6 +26,6 @@ class ImportUser extends Command
      */
     public function handle(UserImporterService $userImporterService)
     {
-        //
+        $userImporterService->import($this->argument('results'), $this->argument('nat'));
     }
 }

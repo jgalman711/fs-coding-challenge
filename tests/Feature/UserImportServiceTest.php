@@ -33,7 +33,6 @@ class UserImportServiceTest extends TestCase
         
         $service = new UserImporterService($entityManagerService, $userFetcherService);
         $service->import();
-        $this->assertTrue(true);
     }
 
     public function test_response_structure_is_correct(): void
