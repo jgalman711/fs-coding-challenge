@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'user_provider' => [
+        'url' => env('USER_PROVIDER_URL', 'https://randomuser.me/api'),
+        'minimum_results' => env('USER_PROVIDER_MINIMUM_RESULT', 100),
+        'default_nationality' => env('USER_PROVIDER_DEFAULT_NATIONALITY', 'au')
+    ],
 ];
