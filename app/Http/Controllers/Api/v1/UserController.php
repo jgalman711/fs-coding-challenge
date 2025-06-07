@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Contracts\UserRepositoryInterface;
 use App\Http\Resources\v1\UserResource;
+use Illuminate\Http\JsonResponse;
 
 class UserController extends BaseController
 {
@@ -14,19 +15,21 @@ class UserController extends BaseController
         $this->userRepositoryInterface = $userRepositoryInterface;        
     }
 
-    public function index()
+    public function index(): JsonResponse
     {
-        return $this->success(
-            'Users retrieved successfully',
-            UserResource::collection($this->userRepositoryInterface->findAll()),
-        );
+        $users = $this->userRepositoryInterface->findAll();
+        if (empty($users)) {
+            return $this->error('No users found');
+        }
+        return $this->success('Users retrieved successfully', UserResource::collection($users));
     }
 
-    public function show(int $id)
+    public function show(int $id): JsonResponse
     {
-        return $this->success(
-            'User retrieved successfully',
-            new UserResource($this->userRepositoryInterface->findById($id)),
-        );
+        $user = $this->userRepositoryInterface->findById($id);
+        if (!$user) {
+            return $this->error('No user found');
+        }
+        return $this->success('User retrieved successfully', new UserResource($user));
     }
 }

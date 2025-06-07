@@ -6,6 +6,9 @@ use App\Entities\User;
 
 interface UserRepositoryInterface
 {
-    public function findAll(): array; 
-    public function findById(int $id): User;
+    public function createOrUpdateByEmail(array $userData): void;
+
+    public function findAll(): array;
+
+    public function findById(int $id): ?User;
 }
