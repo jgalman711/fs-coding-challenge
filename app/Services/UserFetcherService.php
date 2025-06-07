@@ -17,7 +17,7 @@ class UserFetcherService
         try {
             $response = Http::get(config('services.user_provider.url'), [
                 'results' => $results ?? config('services.user_provider.minimum_results'),
-                'nat' => $nat ?? config('services.user_provider.minimum_results'),
+                'nat' => $nat ?? config('services.user_provider.default_nationality'),
             ]);
     
             if (!$response->successful()) {
