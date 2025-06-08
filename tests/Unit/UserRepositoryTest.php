@@ -11,9 +11,6 @@ use PHPUnit\Framework\TestCase;
 
 class UserRepositoryTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     */
     public function test_find_all_returns_array(): void
     {
         $user = new User();
@@ -110,8 +107,8 @@ class UserRepositoryTest extends TestCase
         $mockEntityManager->expects($this->once())
             ->method('flush');
 
-        $repository = new DoctrineUserRepository($mockEntityManager);
-        $repository->createOrUpdateByEmail($userData);
+        $doctrineUserRepository = new DoctrineUserRepository($mockEntityManager);
+        $doctrineUserRepository->createOrUpdateByEmail($userData);
     }
 
     private function fakeUserData(): array
