@@ -108,7 +108,10 @@ class UserRepositoryTest extends TestCase
             ->method('flush');
 
         $doctrineUserRepository = new DoctrineUserRepository($mockEntityManager);
-        $doctrineUserRepository->createOrUpdateByEmail($userData);
+        $newUser = $doctrineUserRepository->createOrUpdateByEmail($userData);
+
+        $this->assertIsObject($newUser);
+        $this->assertInstanceOf(User::class, $newUser);
     }
 
     private function fakeUserData(): array
@@ -119,7 +122,7 @@ class UserRepositoryTest extends TestCase
                 'first' => $faker->firstName(),
                 'last'  => $faker->lastName(),
             ],
-            'email' => $faker->unique()->safeEmail(),
+            'email' => $faker->email(),
             'login' => [
                 'username' => $faker->userName(),
                 'password' => $faker->password(),

@@ -15,7 +15,7 @@ class DoctrineUserRepository implements UserRepositoryInterface
         $this->entityManagerInterface = $entityManagerInterface;        
     }
 
-    public function createOrUpdateByEmail(array $userData): void
+    public function createOrUpdateByEmail(array $userData): User
     {
         $user = $this->entityManagerInterface
             ->getRepository(User::class)
@@ -36,6 +36,8 @@ class DoctrineUserRepository implements UserRepositoryInterface
         $user->setPhone($userData['phone']);
 
         $this->entityManagerInterface->flush();
+
+        return $user;
     }
 
     public function findAll(): array
