@@ -11,13 +11,13 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->getId(),
-            'name' => $this->getName(),
+            'full_name' => $this->getName(),
             'email' => $this->getEmail(),
-            'username' => $this->getUsername(),
-            'gender' => $this->getGender(),
+            'username' => $this->when(request()->routeIs('users.show'), $this->getUsername()),
+            'gender' => $this->when(request()->routeIs('users.show'), $this->getGender()),
             'country' => $this->getCountry(),
-            'city' => $this->getCity(),
-            'phone' => $this->getPhone(),
+            'city' => $this->when(request()->routeIs('users.show'), $this->getCity()),
+            'phone' => $this->when(request()->routeIs('users.show'), $this->getPhone()),
         ];
     }
 }

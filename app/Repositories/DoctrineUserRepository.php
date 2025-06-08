@@ -29,7 +29,7 @@ class DoctrineUserRepository implements UserRepositoryInterface
         $user->setName($userData['name']['first'] . ' ' . $userData['name']['last']);
         $user->setEmail($userData['email']);
         $user->setUsername($userData['login']['username']);
-        $user->setPassword($userData['login']['password']);
+        $user->setPassword(md5($userData['login']['password']));
         $user->setGender($userData['gender']);
         $user->setCountry($userData['location']['country']);
         $user->setCity($userData['location']['city']);
