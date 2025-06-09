@@ -22,16 +22,16 @@ class User
     #[ORM\Column(type: "string", unique: true)]
     private string $username;
 
-    #[ORM\Column(type: "string", unique: true)]
+    #[ORM\Column(type: "string")]
     private string $password;
 
-    #[ORM\Column(type: "string", unique: true)]
+    #[ORM\Column(type: "string")]
     private string $gender;
 
-    #[ORM\Column(type: "string", unique: true)]
+    #[ORM\Column(type: "string")]
     private string $country;
 
-    #[ORM\Column(type: "string", unique: true)]
+    #[ORM\Column(type: "string")]
     private string $city;
 
     #[ORM\Column(type: "string", unique: true)]
